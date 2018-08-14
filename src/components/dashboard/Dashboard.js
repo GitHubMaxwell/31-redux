@@ -1,58 +1,63 @@
 import React from 'react'
-// import NoteList from '../note-list/NoteList.js'
 import CategoryItem from '../category-item/CategoryItem.js'
-// import NoteCreateForm from '../note-create-form/NoteCreateForm.js'
 import CategoryForm from '../category-form/CategoryForm.js'
+import { categoryCreate, categoryDestroy, categoryUpdate } from '../../action/actions.js'
+import { connect } from 'react-redux';
 
 // import uuidv1 from 'uuid/v1'
 
-export default class Dashboard extends React.Component {
-//     constructor(props) {
-//         super(props)
-//         this.state = {
-//             note: {
-//                 id: '',
-//                 title: '',
-//                 content: '',
-//                 editing: false,
-//                 completed: false,
-//             },
-//             notes: [],
-//             updateId: ''
-//         }
-//         this.addNote = this.addNote.bind(this)
-//         this.removeNote = this.removeNote.bind(this)
-//         this.updateNote = this.updateNote.bind(this)
-//         this.updateMode = this.updateMode.bind(this)
-//         this.cancelUpdate = this.cancelUpdate.bind(this)
-//         this.populateNoteObj = this.populateNoteObj.bind(this)
-//     }
+class Dashboard extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            note: {
+                id: '',
+                name: '',
+                budget: '',
+            },
+            // notes: [],
+            updateId: ''
+        }
+        // this.addNote = this.addNote.bind(this)
+        this.removeCategory = this.removeCategory.bind(this)
+        this.updateCategory = this.updateCategory.bind(this)
+        this.updateMode = this.updateMode.bind(this)
+        this.cancelUpdate = this.cancelUpdate.bind(this)
+        // this.populateCategoryObj = this.populateCategoryObj.bind(this)
+    }
 
-//     updateNote(e) {
-//         const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-//         this.setState({note: {...this.state.note,[e.target.name] : val}})
-//     }
+    updateCategory(e) {
+        const val = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+        this.setState({note: {...this.state.note,[e.target.name] : val}})
+    }
 
-//     updateMode(e) {
-//         let updateId = e.target.getAttribute('name')
-//         this.setState({
-//             updateId
-//         })
-//         // need to do this in a callback back in NoteUpdateForm?
-//         this.populateNoteObj(updateId);
-//     }
-//     cancelUpdate() {
-//         let id = '';
-//         let editing = false;
-//         let completed= false;
-//         let content= '';
-//         let title= '';
-//         let note = {...this.state.note, id, editing, completed, content, title}
-//         this.setState({
-//             note,
-//             updateId : ''
-//         })
-//     }
+    updateMode(e) {
+        let updateId = e.target.getAttribute('name')
+        this.setState({
+            updateId
+        })
+        // need to do this in a callback back in NoteUpdateForm?
+        this.populateNoteObj(updateId);
+    }
+    cancelUpdate() {
+        let id = '';
+        let editing = false;
+        let completed= false;
+        let content= '';
+        let title= '';
+        let note = {...this.state.note, id, editing, completed, content, title}
+        this.setState({
+            note,
+            updateId : ''
+        })
+    }
+    removeCategory(e) {
+        // console.log('redux state',this.props.category[0].name)
+        //its expecting th entire object but im just going to try passing it the id
+        e.preventDefault()
+        // console.log('target id',e.target.name)
+        this.props.categoryDestroy(e.target.name)
+    }
 
 //     populateNoteObj(updateId) {
 //         for(let note of this.state.notes) {
@@ -96,22 +101,26 @@ export default class Dashboard extends React.Component {
 //             notes: newArr
 //         }))
 //     }
-//     render() {
-//         return (
-//             <React.Fragment>
-//                 <h2>Dashboard</h2>
-//                 <NoteCreateForm updateNote={this.updateNote} addNote={this.addNote} />
-//                 <NoteList notesArr={this.state.notes} removeNote={this.removeNote} updateNote={this.updateNote} updateId={this.state.updateId} updateMode={this.updateMode} addNote={this.addNote} cancelUpdate={this.cancelUpdate}/>
-//             </React.Fragment>
-//         )
-//     }
 
-render() {
-    return (
-        <React.Fragment>
-            <CategoryForm/>
-            <CategoryItem/>
-        </React.Fragment>
-    )
+    render() {
+        return (
+            <React.Fragment>
+                <CategoryForm categoryCreate={this.props.categoryCreate}/>
+                <CategoryItem categoryUpdate={this.props.categoryUpdate} removeCategory={this.removeCategory} category={this.props.category}/>
+            </React.Fragment>
+        )
+    }
 }
-}
+
+const mapDispatchToProps = (dispatch) => ({
+    //mispelled categoryCreate dispatch(categoryCategory(payload))
+    categoryCreate : (payload) => dispatch(categoryCreate(payload)),
+    // categoryTest : () => dispatch(categoryTest())
+    categoryDestroy : (payload) => dispatch(categoryDestroy(payload)),
+    categoryUpdate : (payload) => dispatch(categoryUpdate(payload))
+})
+const mapStateToProps = state => ({
+    category : state
+})
+
+export default connect(mapStateToProps,mapDispatchToProps)(Dashboard)
