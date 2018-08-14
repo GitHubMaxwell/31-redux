@@ -1,15 +1,7 @@
 import uuid from 'uuid/v1';
-//shape of the category payload?
-// in the create it adds the uuid key and value
-/*
-{
-    name : '',
-    budget : ''
-}
-*/
 
 export const categoryCreate = category => {
-    console.log('category in actions.js: ',category)
+    // console.log('category in actions.js: ',category)
     category.id = uuid();
     category.date = new Date;
     return {
