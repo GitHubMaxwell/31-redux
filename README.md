@@ -1,8 +1,8 @@
-![cf](http://i.imgur.com/7v5ASc8.png) 31: Budget Tracker 
+![cf](http://i.imgur.com/7v5ASc8.png) 31: Budget Tracker [![Build Status](https://travis-ci.com/GitHubMaxwell/31-redux.svg?branch=max2-lab31)](https://travis-ci.com/GitHubMaxwell/31-redux)
 ===
 
-Travis: 
-Github PR:
+Travis: https://travis-ci.com/GitHubMaxwell/31-redux
+Github PR: https://github.com/GitHubMaxwell/31-redux/pull/1
 
 ## Usage Instructions
 * clone fork repo
